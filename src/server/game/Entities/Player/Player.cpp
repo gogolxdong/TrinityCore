@@ -238,7 +238,7 @@ Player::Player(WorldSession* session): Unit(true)
 
     m_trade = nullptr;
 
-    m_cinematic = 0;
+    m_cinematic = 1;
 
     m_movie = 0;
 
@@ -24979,14 +24979,15 @@ void Player::_LoadSkills(PreparedQueryResult result)
             switch (GetSkillRangeType(rcEntry))
             {
                 case SKILL_RANGE_LANGUAGE:                      // 300..300
+                case SKILL_RANGE_LEVEL:
                     value = max = 300;
                     break;
                 case SKILL_RANGE_MONO:                          // 1..1, grey monolite bar
                     value = max = 1;
                     break;
-                case SKILL_RANGE_LEVEL:
-                    max = GetMaxSkillValueForLevel();
-                    break;
+                // case SKILL_RANGE_LEVEL:
+                //     max = GetMaxSkillValue(skill);
+                //     break;
                 default:
                     break;
             }
