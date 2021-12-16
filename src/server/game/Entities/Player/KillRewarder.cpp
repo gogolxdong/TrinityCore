@@ -182,7 +182,7 @@ inline void KillRewarder::_RewardKillCredit(Player* player)
 void KillRewarder::_RewardPlayer(Player* player, bool isDungeon)
 {
     // 4. Reward player.
-    if (!_isBattleGround)
+    // if (!_isBattleGround)
     {
         // 4.1. Give honor (player must be alive and not on BG).
         _RewardHonor(player);
