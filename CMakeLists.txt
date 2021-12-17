@@ -31,11 +31,13 @@ if(POLICY CMP0074)
 endif()
 
 # Set RPATH-handing (CMake parameters)
+set(CMAKE_INSTALL_PREFIX "/low/")
+set(CONF_DIR "/low/etc")
 set(CMAKE_SKIP_BUILD_RPATH 0)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH 0)
-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH 1)
-
+add_compile_options("-fcoroutines")
 # set macro-directory
 list(APPEND CMAKE_MODULE_PATH
   "${CMAKE_SOURCE_DIR}/cmake/macros")
