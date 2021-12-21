@@ -59,7 +59,7 @@ if( UNIX )
 
   else( MYSQL_CONFIG )
     set(MYSQL_ADD_LIBRARIES "")
-    list(APPEND MYSQL_ADD_LIBRARIES "mysqlclient_r")
+    list(APPEND MYSQL_ADD_LIBRARIES "maraidb")
   endif( MYSQL_CONFIG )
 endif( UNIX )
 
@@ -82,7 +82,7 @@ find_path(MYSQL_INCLUDE_DIR
   PATHS
     ${MYSQL_ADD_INCLUDE_PATH}
     /usr/include
-    /usr/include/mysql
+    /usr/include/mariadb
     /usr/local/include
     /usr/local/include/mysql
     /usr/local/mysql/include
