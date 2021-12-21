@@ -59,7 +59,7 @@ if( UNIX )
 
   else( MYSQL_CONFIG )
     set(MYSQL_ADD_LIBRARIES "")
-    list(APPEND MYSQL_ADD_LIBRARIES "maraidb")
+    list(APPEND MYSQL_ADD_LIBRARIES "mariadb")
   endif( MYSQL_CONFIG )
 endif( UNIX )
 
