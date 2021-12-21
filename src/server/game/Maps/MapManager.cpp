@@ -74,7 +74,8 @@ Map* MapManager::CreateBaseMap(uint32 id)
         std::lock_guard<std::mutex> lock(_mapsLock);
 
         MapEntry const* entry = sMapStore.LookupEntry(id);
-        ASSERT(entry);
+        // ASSERT(entry);
+        if (!entry) return nullptr;
 
         if (entry->Instanceable())
             map = new MapInstanced(id, i_gridCleanUpDelay);
@@ -88,7 +89,7 @@ Map* MapManager::CreateBaseMap(uint32 id)
         i_maps[id] = map;
     }
 
-    ASSERT(map);
+    // ASSERT(map);
     return map;
 }
 

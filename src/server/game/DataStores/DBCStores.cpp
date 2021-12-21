@@ -651,17 +651,17 @@ void LoadDBCStores(const std::string& dataPath)
     }
 
     // Check loaded DBC files proper version
-    if (!sAreaTableStore.LookupEntry(4987)         ||       // last area added in 3.3.5a
-        !sCharTitlesStore.LookupEntry(177)         ||       // last char title added in 3.3.5a
-        !sGemPropertiesStore.LookupEntry(1629)     ||       // last gem property added in 3.3.5a
-        !sItemStore.LookupEntry(56806)             ||       // last client known item added in 3.3.5a
-        !sItemExtendedCostStore.LookupEntry(2997)  ||       // last item extended cost added in 3.3.5a
-        !sMapStore.LookupEntry(724)                ||       // last map added in 3.3.5a
-        !sSpellStore.LookupEntry(80864)            )        // last added spell in 3.3.5a
-    {
-        TC_LOG_ERROR("misc", "You have _outdated_ DBC files. Please extract correct versions from current using client.");
-        exit(1);
-    }
+    // if (!sAreaTableStore.LookupEntry(4987)         ||       // last area added in 3.3.5a
+    //     !sCharTitlesStore.LookupEntry(177)         ||       // last char title added in 3.3.5a
+    //     !sGemPropertiesStore.LookupEntry(1629)     ||       // last gem property added in 3.3.5a
+    //     !sItemStore.LookupEntry(56806)             ||       // last client known item added in 3.3.5a
+    //     !sItemExtendedCostStore.LookupEntry(2997)  ||       // last item extended cost added in 3.3.5a
+    //     !sMapStore.LookupEntry(724)                ||       // last map added in 3.3.5a
+    //     !sSpellStore.LookupEntry(80864)            )        // last added spell in 3.3.5a
+    // {
+    //     TC_LOG_ERROR("misc", "You have _outdated_ DBC files. Please extract correct versions from current using client.");
+    //     exit(1);
+    // }
 
     TC_LOG_INFO("server.loading", ">> Initialized %d data stores in %u ms", DBCFileCount, GetMSTimeDiffToNow(oldMSTime));
 

@@ -1578,19 +1578,19 @@ void World::SetInitialWorldSettings()
     sObjectMgr->SetHighestGuids();
 
     ///- Check the existence of the map files for all races' startup areas.
-    if (!MapManager::ExistMapAndVMap(0, -6240.32f, 331.033f)
-        || !MapManager::ExistMapAndVMap(0, -8949.95f, -132.493f)
-        || !MapManager::ExistMapAndVMap(1, -618.518f, -4251.67f)
-        || !MapManager::ExistMapAndVMap(0, 1676.35f, 1677.45f)
-        || !MapManager::ExistMapAndVMap(1, 10311.3f, 832.463f)
-        || !MapManager::ExistMapAndVMap(1, -2917.58f, -257.98f)
-        || (m_int_configs[CONFIG_EXPANSION] && (
-            !MapManager::ExistMapAndVMap(530, 10349.6f, -6357.29f) ||
-            !MapManager::ExistMapAndVMap(530, -3961.64f, -13931.2f))))
-    {
-        TC_LOG_FATAL("server.loading", "Unable to load critical files - server shutting down !!!");
-        exit(1);
-    }
+    // if (!MapManager::ExistMapAndVMap(0, -6240.32f, 331.033f)
+    //     || !MapManager::ExistMapAndVMap(0, -8949.95f, -132.493f)
+    //     || !MapManager::ExistMapAndVMap(1, -618.518f, -4251.67f)
+    //     || !MapManager::ExistMapAndVMap(0, 1676.35f, 1677.45f)
+    //     || !MapManager::ExistMapAndVMap(1, 10311.3f, 832.463f)
+    //     || !MapManager::ExistMapAndVMap(1, -2917.58f, -257.98f)
+    //     || (m_int_configs[CONFIG_EXPANSION] && (
+    //         !MapManager::ExistMapAndVMap(530, 10349.6f, -6357.29f) ||
+    //         !MapManager::ExistMapAndVMap(530, -3961.64f, -13931.2f))))
+    // {
+    //     TC_LOG_FATAL("server.loading", "Unable to load critical files - server shutting down !!!");
+    //     exit(1);
+    // }
 
     ///- Initialize pool manager
     sPoolMgr->Initialize();
@@ -1712,11 +1712,11 @@ void World::SetInitialWorldSettings()
     TC_LOG_INFO("server.loading", "Loading Game Object template addons...");
     sObjectMgr->LoadGameObjectTemplateAddons();
 
-    TC_LOG_INFO("server.loading", "Loading Transport templates...");
-    sTransportMgr->LoadTransportTemplates();
+    // TC_LOG_INFO("server.loading", "Loading Transport templates...");
+    // sTransportMgr->LoadTransportTemplates();
 
-    TC_LOG_INFO("server.loading", "Loading Transport animations and rotations...");
-    sTransportMgr->LoadTransportAnimationAndRotation();
+    // TC_LOG_INFO("server.loading", "Loading Transport animations and rotations...");
+    // sTransportMgr->LoadTransportAnimationAndRotation();
 
     TC_LOG_INFO("server.loading", "Loading Spell Rank Data...");
     sSpellMgr->LoadSpellRanks();
@@ -1838,8 +1838,8 @@ void World::SetInitialWorldSettings()
     TC_LOG_INFO("server.loading", "Loading Creature Linked Respawn...");
     sObjectMgr->LoadLinkedRespawn();                             // must be after LoadCreatures(), LoadGameObjects()
 
-    TC_LOG_INFO("server.loading", "Loading Weather Data...");
-    WeatherMgr::LoadWeatherData();
+    // TC_LOG_INFO("server.loading", "Loading Weather Data...");
+    // WeatherMgr::LoadWeatherData();
 
     TC_LOG_INFO("server.loading", "Loading Quests...");
     sObjectMgr->LoadQuests();                                    // must be loaded after DBCs, creature_template, item_template, gameobject tables
@@ -1856,8 +1856,8 @@ void World::SetInitialWorldSettings()
     TC_LOG_INFO("server.loading", "Loading Quests Greetings...");
     sObjectMgr->LoadQuestGreetings();                           // must be loaded after creature_template, gameobject_template tables
 
-    TC_LOG_INFO("server.loading", "Loading Objects Pooling Data...");
-    sPoolMgr->LoadFromDB();
+    // TC_LOG_INFO("server.loading", "Loading Objects Pooling Data...");
+    // sPoolMgr->LoadFromDB();
     TC_LOG_INFO("server.loading", "Loading Quest Pooling Data...");
     sQuestPoolMgr->LoadFromDB();                                // must be after quest templates
 
@@ -2150,9 +2150,9 @@ void World::SetInitialWorldSettings()
     TC_LOG_INFO("server.loading", "Starting Map System");
     sMapMgr->Initialize();
 
-    TC_LOG_INFO("server.loading", "Starting Game Event system...");
-    uint32 nextGameEvent = sGameEventMgr->StartSystem();
-    m_timers[WUPDATE_EVENTS].SetInterval(nextGameEvent);    //depend on next event
+    // TC_LOG_INFO("server.loading", "Starting Game Event system...");
+    // uint32 nextGameEvent = sGameEventMgr->StartSystem();
+    // m_timers[WUPDATE_EVENTS].SetInterval(nextGameEvent);    //depend on next event
 
     // Delete all characters which have been deleted X days before
     Player::DeleteOldCharacters();
@@ -2166,26 +2166,26 @@ void World::SetInitialWorldSettings()
     TC_LOG_INFO("server.loading", "Initializing Opcodes...");
     opcodeTable.Initialize();
 
-    TC_LOG_INFO("server.loading", "Starting Arena Season...");
-    sGameEventMgr->StartArenaSeason();
+    // TC_LOG_INFO("server.loading", "Starting Arena Season...");
+    // sGameEventMgr->StartArenaSeason();
 
     sTicketMgr->Initialize();
 
     ///- Initialize Battlegrounds
-    TC_LOG_INFO("server.loading", "Starting Battleground System");
-    sBattlegroundMgr->LoadBattlegroundTemplates();
-    sBattlegroundMgr->InitAutomaticArenaPointDistribution();
+    // TC_LOG_INFO("server.loading", "Starting Battleground System");
+    // sBattlegroundMgr->LoadBattlegroundTemplates();
+    // sBattlegroundMgr->InitAutomaticArenaPointDistribution();
 
     ///- Initialize outdoor pvp
     TC_LOG_INFO("server.loading", "Starting Outdoor PvP System");
     sOutdoorPvPMgr->InitOutdoorPvP();
 
     ///- Initialize Battlefield
-    TC_LOG_INFO("server.loading", "Starting Battlefield System");
-    sBattlefieldMgr->InitBattlefield();
+    // TC_LOG_INFO("server.loading", "Starting Battlefield System");
+    // sBattlefieldMgr->InitBattlefield();
 
-    TC_LOG_INFO("server.loading", "Loading Transports...");
-    sTransportMgr->SpawnContinentTransports();
+    // TC_LOG_INFO("server.loading", "Loading Transports...");
+    // sTransportMgr->SpawnContinentTransports();
 
     ///- Initialize Warden
     TC_LOG_INFO("server.loading", "Loading Warden Checks...");
@@ -2201,11 +2201,11 @@ void World::SetInitialWorldSettings()
     InitQuestResetTimes();
     CheckQuestResetTimes();
 
-    TC_LOG_INFO("server.loading", "Calculate random battleground reset time...");
-    InitRandomBGResetTime();
+    // TC_LOG_INFO("server.loading", "Calculate random battleground reset time...");
+    // InitRandomBGResetTime();
 
-    TC_LOG_INFO("server.loading", "Calculate deletion of old calendar events time...");
-    InitCalendarOldEventsDeletionTime();
+    // TC_LOG_INFO("server.loading", "Calculate deletion of old calendar events time...");
+    // InitCalendarOldEventsDeletionTime();
 
     TC_LOG_INFO("server.loading", "Calculate guild limitation(s) reset time...");
     InitGuildResetTime();
