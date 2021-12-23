@@ -1021,165 +1021,165 @@ public:
     }
 };
 
-#include <boost/beast/core.hpp>
-#include <boost/beast/http.hpp>
-#include <boost/beast/version.hpp>
-#include <boost/asio.hpp>
-#include <chrono>
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
-#include <memory>
-#include <string>
-#include <absl/strings/str_split.h>
-#include <boost/json/src.hpp>
+// #include <boost/beast/core.hpp>
+// #include <boost/beast/http.hpp>
+// #include <boost/beast/version.hpp>
+// #include <boost/asio.hpp>
+// #include <chrono>
+// #include <cstdlib>
+// #include <ctime>
+// #include <iostream>
+// #include <memory>
+// #include <string>
+// #include <absl/strings/str_split.h>
+// #include <boost/json/src.hpp>
 
-namespace beast = boost::beast;   // from <boost/beast.hpp>
-namespace http = beast::http;     // from <boost/beast/http.hpp>
-namespace net = boost::asio;      // from <boost/asio.hpp>
-using tcp = boost::asio::ip::tcp; // from <boost/asio/ip/tcp.hpp>
+// namespace beast = boost::beast;   // from <boost/beast.hpp>
+// namespace http = beast::http;     // from <boost/beast/http.hpp>
+// namespace net = boost::asio;      // from <boost/asio.hpp>
+// using tcp = boost::asio::ip::tcp; // from <boost/asio/ip/tcp.hpp>
 
-class http_connection : public std::enable_shared_from_this<http_connection>
-{
-public:
-    http_connection(tcp::socket socket)
-        : socket_(std::move(socket))
-    {
-    }
-    void
-    start()
-    {
-        // auto self = shared_from_this();
-        http::async_read(
-            socket_,
-            buffer_,
-            request_,
-            [this](beast::error_code ec,
-                   std::size_t bytes_transferred)
-            {
-                boost::ignore_unused(bytes_transferred);
-                if (!ec)
-                {
-                    response_.version(request_.version());
-                    response_.keep_alive(false);
-                    switch (request_.method())
-                    {
-                    case http::verb::get:
-                        response_.result(http::status::ok);
-                        response_.result(http::status::not_found);
-                        response_.set(http::field::content_type, "text/plain");
-                        beast::ostream(response_.body()) << "File not found\r\n";
-                        break;
-                    case http::verb::post:
-                        response_.result(http::status::ok);
-                        // response_.set(http::field::server, "Beast");
-                        if (request_.target() == "/registry")
-                        {
-                            boost::json::value decode;
-                            auto it = net::buffer_sequence_begin(request_.body().data());
-                            net::const_buffer buffer = *it;
-                            std::string body((const char*)(buffer.data()));
-                            decode = boost::json::parse(body);
-                            WorldSession *session = new WorldSession(1, "", std::make_shared<WorldSocket>(std::move(socket_)), SEC_PLAYER, 0, 0, LOCALE_enUS, 0, false);
-                            const std::string username = decode.at("account").as_string().data();
-                            const std::string password = decode.at("password").as_string().data();
-                            const std::string emailData = decode.at("email").as_string().data();
-                            Optional<std::string> email = emailData;
-                            ChatHandler *handler = new ChatHandler(session);
-                            account_commandscript::HandleAccountCreateCommand(handler, username, password, email);
+// class http_connection : public std::enable_shared_from_this<http_connection>
+// {
+// public:
+//     http_connection(tcp::socket socket)
+//         : socket_(std::move(socket))
+//     {
+//     }
+//     void
+//     start()
+//     {
+//         // auto self = shared_from_this();
+//         http::async_read(
+//             socket_,
+//             buffer_,
+//             request_,
+//             [this](beast::error_code ec,
+//                    std::size_t bytes_transferred)
+//             {
+//                 boost::ignore_unused(bytes_transferred);
+//                 if (!ec)
+//                 {
+//                     response_.version(request_.version());
+//                     response_.keep_alive(false);
+//                     switch (request_.method())
+//                     {
+//                     case http::verb::get:
+//                         response_.result(http::status::ok);
+//                         response_.result(http::status::not_found);
+//                         response_.set(http::field::content_type, "text/plain");
+//                         beast::ostream(response_.body()) << "File not found\r\n";
+//                         break;
+//                     case http::verb::post:
+//                         response_.result(http::status::ok);
+//                         // response_.set(http::field::server, "Beast");
+//                         if (request_.target() == "/registry")
+//                         {
+//                             boost::json::value decode;
+//                             auto it = net::buffer_sequence_begin(request_.body().data());
+//                             net::const_buffer buffer = *it;
+//                             std::string body((const char*)(buffer.data()));
+//                             decode = boost::json::parse(body);
+//                             WorldSession *session = new WorldSession(1, "", std::make_shared<WorldSocket>(std::move(socket_)), SEC_PLAYER, 0, 0, LOCALE_enUS, 0, false);
+//                             const std::string username = decode.at("account").as_string().data();
+//                             const std::string password = decode.at("password").as_string().data();
+//                             const std::string emailData = decode.at("email").as_string().data();
+//                             Optional<std::string> email = emailData;
+//                             ChatHandler *handler = new ChatHandler(session);
+//                             account_commandscript::HandleAccountCreateCommand(handler, username, password, email);
 
-                            delete[] session;
-                            delete[] handler;
-                            request_.set(http::field::content_type, "text/html");
-                            beast::ostream(response_.body())
-                                << "<html>\n"
-                                << "<head><title>Registry</title></head>\n"
-                                << "<body>\n"
-                                << "<h1>Registered</h1>\n"
-                                << "</body>\n"
-                                << "</html>\r\n";
-                        }
-                        break;
-                    default:
-                        response_.result(http::status::bad_request);
-                        response_.set(http::field::content_type, "text/plain");
-                        beast::ostream(response_.body())
-                            << "Invalid request-method '"
-                            << std::string(request_.method_string())
-                            << "'";
-                        break;
-                    }
+//                             delete[] session;
+//                             delete[] handler;
+//                             request_.set(http::field::content_type, "text/html");
+//                             beast::ostream(response_.body())
+//                                 << "<html>\n"
+//                                 << "<head><title>Registry</title></head>\n"
+//                                 << "<body>\n"
+//                                 << "<h1>Registered</h1>\n"
+//                                 << "</body>\n"
+//                                 << "</html>\r\n";
+//                         }
+//                         break;
+//                     default:
+//                         response_.result(http::status::bad_request);
+//                         response_.set(http::field::content_type, "text/plain");
+//                         beast::ostream(response_.body())
+//                             << "Invalid request-method '"
+//                             << std::string(request_.method_string())
+//                             << "'";
+//                         break;
+//                     }
 
-                    auto self = shared_from_this();
-                    response_.content_length(response_.body().size());
-                    std::cout << response_ << std::endl;
-                    http::async_write(
-                        socket_,
-                        response_,
-                        [self](beast::error_code ec, std::size_t)
-                        {
-                            self->socket_.shutdown(tcp::socket::shutdown_send, ec);
-                            self->deadline_.cancel();
-                        });
-                }
-                socket_.close();
-            });
+//                     auto self = shared_from_this();
+//                     response_.content_length(response_.body().size());
+//                     std::cout << response_ << std::endl;
+//                     http::async_write(
+//                         socket_,
+//                         response_,
+//                         [self](beast::error_code ec, std::size_t)
+//                         {
+//                             self->socket_.shutdown(tcp::socket::shutdown_send, ec);
+//                             self->deadline_.cancel();
+//                         });
+//                 }
+//                 socket_.close();
+//             });
 
-        // auto self = shared_from_this();
-        // deadline_.async_wait(
-        //     [self](beast::error_code ec)
-        //     {
-        //         if (!ec)
-        //         {
-        //             self->socket_.close(ec);
-        //         }
-        //     });
-    }
+//         // auto self = shared_from_this();
+//         // deadline_.async_wait(
+//         //     [self](beast::error_code ec)
+//         //     {
+//         //         if (!ec)
+//         //         {
+//         //             self->socket_.close(ec);
+//         //         }
+//         //     });
+//     }
 
-private:
-    tcp::socket socket_;
-    beast::flat_buffer buffer_{8192};
-    http::request<http::dynamic_body> request_;
-    http::response<http::dynamic_body> response_;
-    net::steady_timer deadline_{
-        socket_.get_executor(), std::chrono::seconds(0)};
-};
+// private:
+//     tcp::socket socket_;
+//     beast::flat_buffer buffer_{8192};
+//     http::request<http::dynamic_body> request_;
+//     http::response<http::dynamic_body> response_;
+//     net::steady_timer deadline_{
+//         socket_.get_executor(), std::chrono::seconds(0)};
+// };
 
-void
-http_server(tcp::acceptor& acceptor, tcp::socket& socket)
-{
-  acceptor.async_accept(socket,
-      [&](beast::error_code ec)
-      {
-          if(!ec)
-              std::make_shared<http_connection>(std::move(socket))->start();
-          http_server(acceptor, socket);
-      });
-}
+// void
+// http_server(tcp::acceptor& acceptor, tcp::socket& socket)
+// {
+//   acceptor.async_accept(socket,
+//       [&](beast::error_code ec)
+//       {
+//           if(!ec)
+//               std::make_shared<http_connection>(std::move(socket))->start();
+//           http_server(acceptor, socket);
+//       });
+// }
 
-void httpListen()
-{
-    while (true)
-    {
-        try
-        {
-            auto const address = net::ip::make_address("0.0.0.0");
-            unsigned short port = static_cast<unsigned short>(std::atoi("8080"));
-            net::io_context ioc{1};
-            tcp::acceptor acceptor{ioc, {address, port}};
-            tcp::socket socket{ioc};
-            http_server(acceptor, socket);
-            ioc.run();
-        }
-        catch (std::exception const &e)
-        {
-            std::cerr << "Error: " << e.what() << std::endl;
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-            continue;
-        }
-    }
-}
-std::thread thr(&httpListen);
+// void httpListen()
+// {
+//     while (true)
+//     {
+//         try
+//         {
+//             auto const address = net::ip::make_address("0.0.0.0");
+//             unsigned short port = static_cast<unsigned short>(std::atoi("8080"));
+//             net::io_context ioc{1};
+//             tcp::acceptor acceptor{ioc, {address, port}};
+//             tcp::socket socket{ioc};
+//             http_server(acceptor, socket);
+//             ioc.run();
+//         }
+//         catch (std::exception const &e)
+//         {
+//             std::cerr << "Error: " << e.what() << std::endl;
+//             std::this_thread::sleep_for(std::chrono::seconds(1));
+//             continue;
+//         }
+//     }
+// }
+// std::thread thr(&httpListen);
 
 void AddSC_account_commandscript()
 {
