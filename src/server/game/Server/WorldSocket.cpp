@@ -29,6 +29,7 @@
 #include "Realm.h"
 #include "ScriptMgr.h"
 #include "World.h"
+#include "../../../../dep/g3dlite/include/G3D/System.h"
 #include "WorldSession.h"
 #include <memory>
 
@@ -217,8 +218,8 @@ bool WorldSocket::ReadHeaderHandler()
 
     if (!header->IsValidSize() || !header->IsValidOpcode())
     {
-        TC_LOG_ERROR("network", "WorldSocket::ReadHeaderHandler(): client %s sent malformed packet (size: %hu, cmd: %u)",
-            GetRemoteIpAddress().to_string().c_str(), header->size, header->cmd);
+        TC_LOG_ERROR("network", "WorldSocket::ReadHeaderHandler(): %s %s client %s sent malformed packet (size: %hu, cmd: %u)",
+            G3D::System::currentDateString().c_str(), G3D::System::currentTimeString().c_str(), GetRemoteIpAddress().to_string().c_str(), header->size, header->cmd);
         return false;
     }
 
