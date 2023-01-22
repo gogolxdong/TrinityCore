@@ -710,8 +710,8 @@ void ObjectMgr::LoadCreatureTemplateAddons()
 {
     uint32 oldMSTime = getMSTime();
 
-    //                                                0       1       2      3       4       5               6               7
-    QueryResult result = WorldDatabase.Query("SELECT entry, path_id, mount, bytes1, bytes2, emote, visibilityDistanceType, auras FROM creature_template_addon");
+    //                                                0       1       2      3                  4         5          6               7       8       9       10                      11
+    QueryResult result = WorldDatabase.Query("SELECT entry, path_id, mount, MountCreatureID, StandState, AnimTier, VisFlags, SheathState, PvPFlags, emote, visibilityDistanceType, auras FROM creature_template_addon");
 
     if (!result)
     {
@@ -736,12 +736,15 @@ void ObjectMgr::LoadCreatureTemplateAddons()
 
         creatureAddon.path_id                   = fields[1].GetUInt32();
         creatureAddon.mount                     = fields[2].GetUInt32();
-        creatureAddon.bytes1                    = fields[3].GetUInt32();
-        creatureAddon.bytes2                    = fields[4].GetUInt32();
-        creatureAddon.emote                     = fields[5].GetUInt32();
-        creatureAddon.visibilityDistanceType    = VisibilityDistanceType(fields[6].GetUInt8());
+        creatureAddon.StandState                    = fields[4].GetUInt8();
+        creatureAddon.AnimTier                    = fields[5].GetUInt8();
+        creatureAddon.VisFlags                    = fields[6].GetUInt8();
+        creatureAddon.SheathState                    = fields[7].GetUInt8();
+        creatureAddon.PvPFlags                    = fields[8].GetUInt8();
+        creatureAddon.emote                     = fields[9].GetUInt32();
+        creatureAddon.visibilityDistanceType    = VisibilityDistanceType(fields[10].GetUInt8());
 
-        for (std::string_view aura : Trinity::Tokenize(fields[7].GetStringView(), ' ', false))
+        for (std::string_view aura : Trinity::Tokenize(fields[11].GetStringView(), ' ', false))
         {
 
             SpellInfo const* spellInfo = nullptr;
@@ -1258,8 +1261,8 @@ void ObjectMgr::LoadCreatureAddons()
 {
     uint32 oldMSTime = getMSTime();
 
-    //                                                0       1       2      3       4       5              6               7
-    QueryResult result = WorldDatabase.Query("SELECT guid, path_id, mount, bytes1, bytes2, emote, visibilityDistanceType, auras FROM creature_addon");
+    //                                                0       1       2           3            4           5         6          7            8       9             10               11
+    QueryResult result = WorldDatabase.Query("SELECT guid, path_id, mount, MountCreatureID, StandState, AnimTier, VisFlags, SheathState, PvPFlags, emote, visibilityDistanceType, auras FROM creature_addon");
 
     if (!result)
     {
@@ -1291,12 +1294,15 @@ void ObjectMgr::LoadCreatureAddons()
         }
 
         creatureAddon.mount                     = fields[2].GetUInt32();
-        creatureAddon.bytes1                    = fields[3].GetUInt32();
-        creatureAddon.bytes2                    = fields[4].GetUInt32();
-        creatureAddon.emote                     = fields[5].GetUInt32();
-        creatureAddon.visibilityDistanceType    = VisibilityDistanceType(fields[6].GetUInt8());
+        creatureAddon.StandState                    = fields[4].GetUInt8();
+        creatureAddon.AnimTier                    = fields[5].GetUInt8();
+        creatureAddon.VisFlags                    = fields[6].GetUInt8();
+        creatureAddon.SheathState                    = fields[7].GetUInt8();
+        creatureAddon.PvPFlags                    = fields[8].GetUInt8();
+        creatureAddon.emote                     = fields[9].GetUInt32();
+        creatureAddon.visibilityDistanceType    = VisibilityDistanceType(fields[10].GetUInt8());
 
-        for (std::string_view aura : Trinity::Tokenize(fields[7].GetStringView(), ' ', false))
+        for (std::string_view aura : Trinity::Tokenize(fields[11].GetStringView(), ' ', false))
         {
             SpellInfo const* spellInfo = nullptr;
             if (Optional<uint32> spellId = Trinity::StringTo<uint32>(aura))
